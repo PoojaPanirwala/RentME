@@ -1,0 +1,25 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.3.32901.215
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RentME", "RentME.csproj", "{54A72F32-D600-428A-9427-DF167CEC41C7}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{54A72F32-D600-428A-9427-DF167CEC41C7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{54A72F32-D600-428A-9427-DF167CEC41C7}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{54A72F32-D600-428A-9427-DF167CEC41C7}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{54A72F32-D600-428A-9427-DF167CEC41C7}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {D5FB9900-64F5-4BE5-93A7-C92C67AD42B6}
+	EndGlobalSection
+EndGlobal
