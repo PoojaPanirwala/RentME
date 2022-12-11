@@ -15,6 +15,7 @@ namespace RentME.Controllers
             _context = context;
         }
 
+
         // GET: PostController/Create
         public ActionResult Create()
         {
@@ -24,19 +25,32 @@ namespace RentME.Controllers
         // POST: PostController/Create
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind("EnrollmentDate,FirstMidName,LastName")] Post post)
+        public async Task<ActionResult> CreateAsync([Bind("imageURL,title,description")] Post post)
         {
             try
             {
+                //changes
+                if (ModelState.IsValid)
+                {
+                    _context.posts.Add(post);
+                    await _context.SaveChangesAsync();
+                    ViewBag.Message = "Congratulations! You have added your add on RentME";
+                    HttpContext.Session.SetString("imageURL", post.imageURL);
+                    HttpContext.Session.SetString("title", post.title);
+                    HttpContext.Session.SetString("description", post.description);
+                    
+                    return RedirectToAction(nameof(Index));
+                }
 
                 //code here for success
-                return View("Index", "Home");
+                return View("Index","Home");
             }
             catch
             {
                 return View();
             }
         }
+
 
         // POST: PostController/Delete/5
         [HttpPost]
