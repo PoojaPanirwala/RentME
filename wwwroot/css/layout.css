@@ -70,6 +70,10 @@ label {
     color: white;
 }
 
+.btn-theme:hover {
+    color: #ffd9b3 !important;
+}
+
 header {
-    background-color: wheat;
+    background-color: #ecd9c6;
 }
