@@ -1,0 +1,31 @@
+﻿@model RentME.Models.Post
+
+<div class="container p-5">
+    <h3 class="theme-color">Create New Post</h3>
+    <hr class="colorgraph" />
+    <div class="d-flex justify-content-between">
+        <form class="form-floating col-md-6">
+            <input type="text" class="form-control" id="title" placeholder="Type your title..">
+            <label for="title">Title</label>
+            <div class="form-floating">
+                <textarea class="form-control mt-4" placeholder="Leave a description here.." id="description" style="height: 100px"></textarea>
+                <label for="description">Description</label>
+            </div>
+        </form>
+        <div class="col-md-2">
+            <img class="" height="200" width="200" src="/img/user.png">
+            <input type="file" style="width:200px">
+        </div>
+        
+    </div>
+    <button class="btn theme-btn ml-2" onclick="@Url.Action("Create","Post")">Save</button>
+    <button class="btn btn-danger ml-2" onclick="location.href='@Url.Action("Index","Home")';">Cancel</button>
+    <div class="col">
+        <div class="col=md=6">
+            <div class="form-floating">
+            </div>
+        </div>
+        <div class="col-md-6">
+        </div>
+    </div>
+</div>

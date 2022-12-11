@@ -65,14 +65,18 @@ label {
     font-weight: 600;
 }
 
+.theme-color {
+    color: #4d2600;
+}
+
 .theme-btn {
     background-color: #4d2600;
     color: white;
 }
 
-.btn-theme:hover {
-    color: #ffd9b3 !important;
-}
+    .theme-btn:hover {
+        color: papayawhip !important;
+    }
 
 header {
     background-color: #ecd9c6;

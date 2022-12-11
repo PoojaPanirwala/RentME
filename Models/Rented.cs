@@ -1,4 +1,4 @@
-﻿namespace RentMe.Models
+﻿namespace RentME.Models
 {
     public class Rented
     {
