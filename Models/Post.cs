@@ -11,9 +11,10 @@ namespace RentME.Models
         [Required]
         [MaxLength(100)]
         public string description { get; set; }
-        public string postType { get;set; }
+        public string postType { get; set; }
         public DateTime addedDate { get; set; }
         public int addedBy { get; set; }
         public int typeid { get; set; }
+        public List<Post> postsList { get; set; }
     }
 }

@@ -1,4 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
+using RentME.Data;
 using RentME.Models;
 using System.Diagnostics;
 
@@ -6,16 +8,17 @@ namespace RentME.Controllers
 {
     public class HomeController : Controller
     {
-        private readonly ILogger<HomeController> _logger;
+        private readonly UserContext _context;
 
-        public HomeController(ILogger<HomeController> logger)
+        public HomeController(UserContext context)
         {
-            _logger = logger;
+            _context = context;
         }
-
-        public IActionResult Index()
+        public async Task<IActionResult> Index()
         {
-            return View();
+            Post allposts = new Post();
+            allposts.postsList = await _context.posts.ToListAsync();
+            return View(allposts);
         }
 
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]

@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using RentME.Data;
 using RentME.Models;
 
@@ -13,6 +14,7 @@ namespace RentME.Controllers
         {
             _context = context;
         }
+
         // GET: PostController/Create
         public ActionResult Create()
         {
@@ -26,9 +28,9 @@ namespace RentME.Controllers
         {
             try
             {
-                
+
                 //code here for success
-                return View("Index","Home");
+                return View("Index", "Home");
             }
             catch
             {
