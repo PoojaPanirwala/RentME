@@ -1,14 +1,15 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using RentME.Data;
 using RentME.Models;
 
 namespace RentME.Controllers
 {
     public class PostController : Controller
     {
-        private readonly UsDBContext _context;
+        private readonly UserContext _context;
 
-        public EmployeeController(CompanyDBContext context)
+        public PostController(UserContext context)
         {
             _context = context;
         }
