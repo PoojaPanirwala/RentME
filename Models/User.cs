@@ -17,9 +17,7 @@ namespace RentME.Models
         [Required]
         [RegularExpression(@"^\\+?[1-9][0-9]{10}$")]
         public long? mobileNo { get; set; }
-        [Required]
         public string city { get; set; }
-        [Required]
         public string country { get; set; }
         public string accessMode { get; set; }
     }

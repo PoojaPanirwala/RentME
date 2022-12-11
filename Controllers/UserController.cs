@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.Rendering;
+using System.Security.Cryptography;
 using Microsoft.EntityFrameworkCore;
 using RentME.Data;
 using RentME.Models;
@@ -20,9 +20,25 @@ namespace RentME.Controllers
         }
 
         [HttpPost]
-        public IActionResult Login()
+        public async Task<IActionResult> Login([Bind("userName,password")] User userdata)
         {
-            //HttpContent.Session["usertype"] ="";
+            try
+            {
+                User user = await _context.users.FindAsync(userdata.userName);
+                if (user != null)
+                {
+
+                }
+                else
+                {
+
+                }
+            }
+            catch (Exception ex)
+            {
+
+            }
+
             return View();
         }
 
@@ -50,27 +66,24 @@ namespace RentME.Controllers
             return View(user);
         }
 
-        // GET: User/Create
-        public IActionResult Register()
-        {
-            return View();
-        }
 
         [HttpPost]
-        [ValidateAntiForgeryToken]
         public async Task<IActionResult> Register([Bind("userId,firstName,lastName,userName,password,mobileNo,city,country,accessMode")] User user)
         {
             try
             {
                 if (ModelState.IsValid)
                 {
-                    _context.Add(user);
+                    _context.users.Add(user);
                     await _context.SaveChangesAsync();
                     ViewBag.Message = "Congratulations! You're registered to RentME";
+                    HttpContext.Session.SetString("username", user.userName);
+                    HttpContext.Session.SetString("firstname", user.firstName);
+                    ViewData["firstname"] = HttpContext.Session.GetString("firstname");
                     return RedirectToAction("Index", "Home");
                 }
             }
-            catch(Exception e)
+            catch (Exception e)
             {
                 ViewBag.ErrorMessage = e.Message;
             }
@@ -160,14 +173,21 @@ namespace RentME.Controllers
             {
                 _context.users.Remove(user);
             }
-            
+
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
 
         private bool UserExists(int id)
         {
-          return _context.users.Any(e => e.userId == id);
+            return _context.users.Any(e => e.userId == id);
+        }
+
+        public async Task<IActionResult> Logout()
+        {
+            HttpContext.Session.Clear();
+            ViewData["firstname"] = null;
+            return RedirectToAction("Index", "Home");
         }
     }
 }

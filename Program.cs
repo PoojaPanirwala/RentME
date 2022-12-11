@@ -9,9 +9,14 @@ builder.Services.AddControllersWithViews();
 //Adding default connection to database
 builder.Services.AddDbContext<UserContext>(options =>
   options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
-
+//Set Session Timeout. Default is 20 minutes.
+builder.Services.AddSession(options =>
+{
+    options.IdleTimeout = TimeSpan.FromMinutes(30);
+});
 
 var app = builder.Build();
+app.UseSession();
 
 // Configure the HTTP request pipeline.
 if (!app.Environment.IsDevelopment())

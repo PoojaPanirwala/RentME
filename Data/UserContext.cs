@@ -9,6 +9,10 @@ namespace RentME.Data
         {
         }
         public DbSet<User> users { get; set; }
+        public DbSet<Post> posts { get; set; }
+        public DbSet<Car> cars { get; set; }
+        public DbSet<Address> addresses { get; set; }
+        public DbSet<Rented> rented { get; set; }
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.Entity<User>().ToTable("Users");
