@@ -19,6 +19,7 @@ namespace RentME.Controllers
             _context = context;
         }
 
+        [HttpPost]
         public IActionResult Login()
         {
             //HttpContent.Session["usertype"] ="";
