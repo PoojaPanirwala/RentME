@@ -3,23 +3,27 @@
 <div class="container p-5">
     <h3 class="theme-color">Create New Post</h3>
     <hr class="colorgraph" />
-    <div class="d-flex justify-content-between">
-        <form class="form-floating col-md-6">
-            <input type="text" class="form-control" id="title" name="title" placeholder="Type your title..">
-            <label for="title">Title</label>
-            <div class="form-floating">
-                <textarea class="form-control mt-4" placeholder="Leave a description here.." id="description" name="description" style="height: 100px"></textarea>
-                <label for="description">Description</label>
+    <form name="register_post" method="post" action="~/Post/Create">
+        <div class="d-flex justify-content-between">
+            <div class="form-floating col-md-6">
+                <input type="text" class="form-control" id="title" name="title" placeholder="Type your title..">
+                <label for="title">Title</label>
+                <div class="form-floating">
+                    <textarea class="form-control mt-4" placeholder="Leave a description here.." id="description" name="description" style="height: 100px"></textarea>
+                    <label for="description">Description</label>
+                </div>
             </div>
-        </form>
-        <div class="col-md-2">
-            <img class="" height="200" width="200" src="/img/user.png">
-            <input type="file" style="width:200px">
+            <div class="col-md-2">
+                <img class="" height="200" width="200" src="/img/user.png">
+                <input type="file" style="width:200px" id="imageURL" name="imageURL">
+            </div>
+
         </div>
-        
-    </div>
-    <button class="btn theme-btn ml-2" onclick="@Url.Action("Create","Post")">Save</button>
-    <button class="btn btn-danger ml-2" onclick="location.href='@Url.Action("Index","Home")';">Cancel</button>
+        <input class="btn theme-btn ml-2" type="submit" value="Save" />
+        <input class="btn btn-danger ml-2" type="button" onclick="location.href='@Url.Action("Index","Home")';" value="Cancel" />
+    </form>
+
+
     <div class="col">
         <div class="col=md=6">
             <div class="form-floating">

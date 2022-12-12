@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Cryptography.KeyDerivation;
 using System.Security.Cryptography;
 using Microsoft.EntityFrameworkCore;
 using RentME.Data;
@@ -20,33 +21,42 @@ namespace RentME.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> Login([Bind("userName,password")] User userdata)
+        public async Task<JsonResult> Login([Bind("userName,password")] User userdata)
         {
             try
             {
-                User user = await _context.users.FindAsync(userdata.userName);
-                if (user != null)
+                if (userdata.userName != null && userdata.password != null)
                 {
-
+                    User user = null;
+                    var temp = _context.users.Where(x => x.userName == userdata.userName).First();
+                    user = temp;
+                    if (user != null)
+                    {
+                        HttpContext.Session.SetInt32("userID", user.userId);
+                        HttpContext.Session.SetString("username", user.userName);
+                        HttpContext.Session.SetString("firstname", user.firstName);
+                        TempData["isError"] = null;
+                        TempData["firstname"] = HttpContext.Session.GetString("firstname");
+                        return Json("success");
+                    }
+                    else
+                    {
+                        TempData["isError"] = "Something went wrong!";
+                        return Json("User not found! Try again!");
+                    }
                 }
                 else
                 {
-
+                    TempData["isError"] = "Something went wrong!";
+                    return Json("Check your details once again!");
                 }
+
             }
             catch (Exception ex)
             {
-
+                return Json(ex.Message);
             }
-
-            return View();
         }
-
-        // GET: User
-        //public async Task<IActionResult> Index()
-        //{
-        //      return View(await _context.users.ToListAsync());
-        //}
 
         // GET: User/Details/5
         public async Task<IActionResult> Details(int? id)
@@ -68,26 +78,39 @@ namespace RentME.Controllers
 
 
         [HttpPost]
-        public async Task<IActionResult> Register([Bind("userId,firstName,lastName,userName,password,mobileNo,city,country,accessMode")] User user)
+        public async Task<JsonResult> Register([Bind("userId,firstName,lastName,userName,password,mobileNo,city,country,accessMode")] User user)
         {
             try
             {
-                if (ModelState.IsValid)
-                {
-                    _context.users.Add(user);
-                    await _context.SaveChangesAsync();
-                    ViewBag.Message = "Congratulations! You're registered to RentME";
-                    HttpContext.Session.SetString("username", user.userName);
-                    HttpContext.Session.SetString("firstname", user.firstName);
-                    ViewData["firstname"] = HttpContext.Session.GetString("firstname");
-                    return RedirectToAction("Index", "Home");
-                }
+                // Generate a 128 - bit salt using a sequence of
+                // cryptographically strong random bytes.
+                byte[] salt = RandomNumberGenerator.GetBytes(128 / 8); // divide by 8 to convert bits to bytes
+                                                                       // derive a 256-bit subkey (use HMACSHA256 with 100,000 iterations)
+                string hashed = Convert.ToBase64String(KeyDerivation.Pbkdf2(
+                    password: user.password!,
+                    salt: salt,
+                    prf: KeyDerivationPrf.HMACSHA256,
+                    iterationCount: 100000,
+                    numBytesRequested: 256 / 8));
+
+                user.password = hashed;
+                user.accessMode = "user";
+                user.country = "Canada";
+                user.city = "Tornoto";
+                _context.users.Add(user);
+                await _context.SaveChangesAsync();
+
+                HttpContext.Session.SetString("username", user.userName);
+                HttpContext.Session.SetString("firstname", user.firstName);
+                TempData["firstname"] = HttpContext.Session.GetString("firstname");
+
+                return Json("success");
+
             }
             catch (Exception e)
             {
-                ViewBag.ErrorMessage = e.Message;
+                return Json(e.Message);
             }
-            return View(user);
         }
 
         // GET: User/Edit/5
@@ -186,7 +209,8 @@ namespace RentME.Controllers
         public async Task<IActionResult> Logout()
         {
             HttpContext.Session.Clear();
-            ViewData["firstname"] = null;
+            TempData["firstname"] = null;
+            TempData["isError"] = null;
             return RedirectToAction("Index", "Home");
         }
     }

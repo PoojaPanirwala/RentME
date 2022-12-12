@@ -16,6 +16,10 @@ namespace RentME.Controllers
         }
         public async Task<IActionResult> Index()
         {
+            if (HttpContext.Session.GetString("firstname") != null)
+            {
+                TempData["firstname"] = HttpContext.Session.GetString("firstname");
+            }
             Post allposts = new Post();
             allposts.postsList = await _context.posts.ToListAsync();
             return View(allposts);

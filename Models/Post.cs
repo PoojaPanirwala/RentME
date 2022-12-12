@@ -4,7 +4,7 @@ namespace RentME.Models
 {
     public class Post
     {
-        public int postID { get; set; }
+        public virtual int postID { get; set; }
         public string imageURL { get; set; }
         [Required]
         public string title { get; set; }

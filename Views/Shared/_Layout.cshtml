@@ -1,10 +1,9 @@
-﻿
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>@ViewData["Title"] - RentMe</title>
+    <title> - RentMe</title>
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" id="bootstrap-css" />
     <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
     <link rel="stylesheet" href="~/RentMe.styles.css" asp-append-version="true" />
@@ -25,12 +24,10 @@
                     &nbsp; &nbsp; &nbsp;
 
                     <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-                        <li class="nav-item">
-                            <a class="nav-link active" aria-current="page" href="#">Home</a>
-                        </li>
+                        
                     </ul>
 
-                    @if (ViewData["firstname"] == null)
+                    @if (TempData["firstname"] == null)
                     {
                         <form class="d-flex">
                             <button id="btnShowModal" class="btn-theme" style="margin-right:15px" type="button" data-toggle="modal" data-target="#myModal">Login/SignUp</button>
@@ -39,7 +36,7 @@
                     else
                     {
                         <form class="d-flex" action="/User/Logout" method="get">
-                            Hello, <h4 class="theme-color">@ViewData["firstname"].ToString()</h4>
+                            <h5 class="theme-color">Hello, @TempData["firstname"].ToString()</h5>&emsp;&emsp;
                             <button type="submit" class="btn-theme" style="margin-right:15px" type="button">Logout</button>
                         </form>
                     }

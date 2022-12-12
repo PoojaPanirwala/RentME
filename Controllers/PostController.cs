@@ -15,7 +15,7 @@ namespace RentME.Controllers
             _context = context;
         }
         // GET: PostController/Create
-        public ActionResult Create()
+        public IActionResult Create()
         {
             return View();
         }
@@ -23,24 +23,21 @@ namespace RentME.Controllers
         // POST: PostController/Create
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<ActionResult> CreateAsync([Bind("imageURL,title,description")] Post post)
+        public async Task<ActionResult> Create([Bind("imageURL,title,description")] Post post)
         {
             try
             {
+                post.postType = "1";
+                post.imageURL = "img/" + Path.GetFileName(post.imageURL);
+                post.addedDate = DateTime.Now;
+                post.addedBy = Convert.ToInt32(HttpContext.Session.GetInt32("userID"));
                 //changes
-                if (ModelState.IsValid)
-                {
-                    _context.posts.Add(post);
-                    await _context.SaveChangesAsync();
-                    ViewBag.Message = "Congratulations! You have added your add on RentME";
-                    HttpContext.Session.SetString("imageURL", post.imageURL);
-                    HttpContext.Session.SetString("title", post.title);
-                    HttpContext.Session.SetString("description", post.description);
+                _context.posts.Add(post);
+                await _context.SaveChangesAsync();
+                ViewBag.Message = "Congratulations! You have added your add on RentME";
 
-
-                }
                 //code here for success
-                return View("Index", "Home");
+                return RedirectToAction("Index", "Home");
             }
             catch
             {
@@ -49,18 +46,22 @@ namespace RentME.Controllers
         }
 
 
-        // POST: PostController/Delete/5
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public ActionResult Delete(int id, IFormCollection collection)
+        public async Task<IActionResult> Delete(int? id)
         {
             try
             {
-                return RedirectToAction(nameof(Index));
+                var post = await _context.posts.FindAsync(id);
+                if (post != null)
+                {
+                    _context.posts.Remove(post);
+                }
+
+                await _context.SaveChangesAsync();
+                return RedirectToAction("Index", "Home");
             }
             catch
             {
-                return View();
+                return View("Index", "Home");
             }
         }
     }
